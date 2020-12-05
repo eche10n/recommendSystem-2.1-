@@ -95,16 +95,21 @@ print(result1Task)
 
 
 
-recommendedDict = dict()
 lastCoutner = 0
-for i in shouldRate:
-    if placecontext.iloc[user][i] == place[0]:
-        if daycontext.iloc[user][i] in weekend:
-            recommendedDict[i+1] = result1Task[i+1]
-            counter+=1
 
-result2 = dict(sorted(recommendedDict.items(), key = lambda kv:kv[1]))
-lastResult = dict()
+dictForRecommend = result1Task.copy()
+for i in shouldRate:
+    for similarUser in result1:
+        if(placecontext.iloc[similarUser][i + 1] == place[0]):
+            dictForRecommend[i + 1] = dictForRecommend[i + 1] + 0.3
+
+        if (daycontext.iloc[similarUser][i + 1] in weekend):
+            dictForRecommend[i + 1] = dictForRecommend[i + 1] + 0.3
+
+print(result1Task)
+print(dictForRecommend)
+
+result2 = dict(sorted(dictForRecommend.items(), key = lambda kv:kv[1], reverse = True) [:1])
 if result2:
     keys = getList(result2)
     print(keys[0])
